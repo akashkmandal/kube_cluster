@@ -71,7 +71,7 @@ systemctl enable kubelet
 
 kubeadm config images pull
 
-kubeadm init --pod-network-cidr=192.168.56.3/16 --upload-certs --control-plane-endpoint=controllee.local
+kubeadm init --pod-network-cidr=192.168.0.0/16 --upload-certs --control-plane-endpoint=$hostname
 }
 
 if [[ $# == 0 ]]; then
@@ -85,7 +85,7 @@ if [[ $1 == master ]]; then
 	echo "Setting up masternode"
 	master_setup
 	mkdir -p $HOME/.kube
-        cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+        cp -rp /etc/kubernetes/admin.conf $HOME/.kube/config
         chown $(id -u):$(id -g) $HOME/.kube/config
 	sleep 20
 	kubectl get nodes
@@ -98,6 +98,7 @@ if [[ $1 == master ]]; then
 fi
 if [[ $1 == worker ]]; then
 	echo "Setting up workernode"
+
 fi
 if [[ $1 == destroy ]]; then
 	echo "Removing packages"
